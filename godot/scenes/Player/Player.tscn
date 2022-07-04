@@ -1,0 +1,88 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://scripts/Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://assets/graphics/generated_white_bot/run_2.png" type="Texture" id=2]
+[ext_resource path="res://assets/graphics/generated_white_bot/no_anim_0.png" type="Texture" id=3]
+[ext_resource path="res://assets/graphics/generated_white_bot/idle_0.png" type="Texture" id=4]
+[ext_resource path="res://assets/graphics/generated_white_bot/idle_2.png" type="Texture" id=5]
+[ext_resource path="res://assets/graphics/generated_white_bot/idle_3.png" type="Texture" id=6]
+[ext_resource path="res://assets/graphics/generated_white_bot/run_3.png" type="Texture" id=7]
+[ext_resource path="res://assets/graphics/generated_white_bot/run_1.png" type="Texture" id=8]
+[ext_resource path="res://assets/graphics/generated_white_bot/idle_1.png" type="Texture" id=9]
+[ext_resource path="res://assets/graphics/generated_white_bot/run_0.png" type="Texture" id=10]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 9 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 6 ) ],
+"loop": false,
+"name": "hard_land",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "default",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 9 ), ExtResource( 5 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "idle",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 8 ) ],
+"loop": false,
+"name": "fall",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 10 ), ExtResource( 8 ), ExtResource( 2 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "run",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 10 ) ],
+"loop": true,
+"name": "dash",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 10 ) ],
+"loop": false,
+"name": "jump",
+"speed": 10.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 6, 8 )
+
+[node name="Player" type="KinematicBody2D"]
+collision_layer = 2
+script = ExtResource( 1 )
+jump_strength = 250.0
+
+[node name="PlayerSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "hard_land"
+frame = 7
+playing = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.231, 0.231 )
+drag_margin_top = 1.0
+drag_margin_bottom = 1.0
+editor_draw_drag_margin = true
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 4 )
+shape = SubResource( 2 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+emitting = false
+
+[node name="GroundDetector" type="RayCast2D" parent="."]
+position = Vector2( 0, 12 )
+enabled = true
+cast_to = Vector2( 0, 1 )
+
+[connection signal="animation_finished" from="PlayerSprite" to="." method="_on_PlayerSprite_animation_finished"]
